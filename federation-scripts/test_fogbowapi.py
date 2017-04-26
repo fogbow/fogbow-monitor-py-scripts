@@ -18,7 +18,7 @@ CONST_COMPONENT_MAJOR_OUTAGE="4"
 cliPath = "../fogbow-components/fogbow-cli-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
 url = "http://10.11.4.234:8182"
 fogbowApi = FogbowApi(cliPath,url,"eyJsb2duaW4iOiJmb2dib3ciLCJuYW1lIjoiRm9nYm93IFVzZXIiLCJleHBpcmF0aW9uRGF0ZSI6MTUyNDY5ODg3MTgwMH0hIyFmSXpjV1FzMjZiMkliUm5tQ1oxWk5XNnZFMnNOUmhudWhzLzZ0VEYwRFV0MVIzN0YvMmhVM0YxcDIxZEJuOXFmdWNqeFVoUG0wUGtrZE14SlFEbmcyL3lkOXN4YW8yNlp0SEczYytCRVUrdVZmelNBZThIUEwvSTVCRWRBdi8ya2d4STc4THlTQ29SREFGUFlZMVlsR3loMDYweC8rRU03QXgxSlBDRDJJdk9XOWtDS2N1RzZkcWUvSWhDb3NlL3ZUblRDMjhuN3FNU3BRRjN4WUZjS01aSFdKN3hrVlJHbHFtcGhKWDBkYzZjcFJzcldYeXlHZmR4OGYydlIzTUVOMENGUFM1S1o2NWtDaEw1QnI1MGM0cTRHQ0pZTVZ2RVZWa29qZmdQak1XMTRWMUE5Z3BwMXBvaW52NXdxMXk3amxnUGNWOUhma25TM05wdDJVZStLb0E9PQ==")
-
+publicKey = "/home/gustavorag/.ssh/id_rsa.pub"
 	
 
 logger.debug("Creating %s orders ..." % ("1"))
@@ -29,7 +29,7 @@ orderRequirements = None
 
 requirements =  "\"Glue2vCPU >= 1 && Glue2RAM >= 1024 Glue2CloudComputeManagerID==\'%s\'\"" % ("lsd.manager.naf.lsd.ufcg.edu.br")
 	
-details = " --n %s --requirements %s --image %s --public-key %s " % ("1",requirements, "fogbow-ubuntu", "**WE#@WE")
+details = " --n %s --requirements %s --image %s --public-key %s " % ("1",requirements, "fogbow-ubuntu", publicKey)
 ordersID = fogbowApi.createIntanceOrder(details)
 
 

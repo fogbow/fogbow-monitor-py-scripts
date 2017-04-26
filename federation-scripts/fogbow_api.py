@@ -83,8 +83,8 @@ class FogbowApi:
 	def getOrder(self, orderId):
 		extraParams = "--id %s" % (orderId)
 		orderDetails = execute_cli_command("order","get",extraParams)
-		return orderDetails
-
+		return self.extractOrderIds(orderDetails)
+	
 	def getReourcesId(self, orderDetails):
 		return self.getPropertyFromDetail("X-OCCI-Attribute: org.fogbowcloud.order.instance-id", orderDetails)
 

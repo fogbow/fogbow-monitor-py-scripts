@@ -16,8 +16,13 @@ CONST_COMPONENT_MAJOR_OUTAGE="4"
 
 class TestComputer:
 
-	def __init__(self):
+	def __init__(self, countOrder, image, orderRequirements, managerLocation, publicKey):
 		'''__init__ Constructor'''
+		self.countOrder = countOrder
+		self.image = image
+		self.orderRequirements = orderRequirements
+		self.managerLocation = managerLocation
+		self.publicKey = publicKey
 		pass
 
 	def createCachetIncident(self, name, message, managerLocation, status):
@@ -47,19 +52,19 @@ class TestComputer:
 				FogbowApi.deleteComputer(resourceId)
 
 
-	def createOrders(self, countOrder, image,orderRequirements, managerLocation):
+	def createOrders(self):
 
-		logger.debug("Creating %s orders ..." % (endpoint))
+		logger.debug("Creating %s orders ..." % (self.countOrder))
 
 		requirements = ""
 
 		try:
-			if orderRequirements is None:
-				requirements = "Glue2CloudComputeManagerID==\"%s%s" % (managerLocation, "\"")
+			if self.orderRequirements is None:
+				requirements = "Glue2CloudComputeManagerID==\"%s%s" % (self.managerLocation, "\"")
 			else:
-				requirements =  orderRequirements+" && Glue2CloudComputeManagerID==\"%s%s" % (managerLocation, "\"")
+				requirements =  self.orderRequirements+" && Glue2CloudComputeManagerID==\"%s%s" % (self.managerLocation, "\"")
 				
-			details = " --n %s --requirements %s --image %s --public-key %s " % (countOrder, requirements, image, self.PublicKey)
+			details = " --n %s --requirements %s --image %s --public-key %s " % (self.countOrder, requirements, self.image, self.PublicKey)
 			ordersID = FogbowApi.createIntanceOrder(details)
 
 			#save ordersID on a file: /tmp/current_orders
