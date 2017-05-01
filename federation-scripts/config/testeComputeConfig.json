@@ -1,0 +1,10 @@
+{
+	"orderMumber":"1",
+	"image":"fogbow-ubuntu",
+	"cpuSize":"1",
+	"memorySize":"1024",
+	"managerLocation":"lsd.manager.naf.lsd.ufcg.edu.br",
+	"publicKey":"/home/gustavorag/.ssh/id_rsa.pub",
+	"privKeyPath":"/home/gustavorag/.ssh/id_rsa",
+	"sshTimeout":"30"
+}

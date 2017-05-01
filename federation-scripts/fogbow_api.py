@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys, json, logging, re, subprocess
 import os.path
+from pprint import pprint
 currDirectory = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -9,13 +10,16 @@ logger = logging.getLogger("FogbowApi")
 
 class FogbowApi:
 
-	def __init__(self, cliPath, url, authToken):
-		with open('fogbowConfi.json') as data_file:   
-    	data = json.load(data_file)
-    	pprint(data)
-		self.cliPath = cliPath
-		self.url = url
-		self.authToken = authToken 
+	def __init__(self):
+
+		config = None
+
+		with open('config/fogbowConfi.json') as data_file:
+			config = json.load(data_file)
+	    	
+		self.cliPath = config["cliPath"]
+		self.url = config["url"]
+		self.authToken = config["authToken"] 
 
 	def execute_cli_command(self, elementType, commandType, extraParams):
 		
@@ -146,7 +150,18 @@ class FogbowApi:
 				None
 		else:
 			None
+	
+	def getLocalNetworkIp(self, instanceDetails):
 		
+		ipInfo = self.getPropertyFromDetail("X-OCCI-Attribute: org.fogbowcloud.order.local-ip-address", instanceDetails)
+		if ipInfo is not None:
+			m = re.search('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', ipInfo)
+			if m is not None:
+				return ipInfo
+			else:
+				None
+		else:
+			None
 	
 	def deleteComputer(self, instanceId):
 		extraParams = ["--id", instanceId]
