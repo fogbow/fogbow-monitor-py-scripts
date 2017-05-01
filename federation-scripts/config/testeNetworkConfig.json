@@ -4,7 +4,7 @@
 		"cpuSize":"1",
 		"memorySize":"1024",
 		"publicKey":"/home/gustavorag/.ssh/id_rsa.pub",
-		"privKeyPath":"/home/gustavorag/.ssh/id_rsa",
+		"privKeyPath":"/home/gustavorag/.ssh/id_rsa"
 	},
 	"networkConfig":{
 		"cidr":"10.10.10.0/24",

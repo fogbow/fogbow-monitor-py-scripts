@@ -26,6 +26,8 @@ class TestNetwork:
 		self.computerConfig = config["computerConfig"]
 		self.networkConfig = config["networkConfig"]
 		self.sshTimeout = config["sshTimeout"]
+		self.managerLocation = config["managerLocation"]
+		
 		self.fogbowApi = FogbowApi()
 		pass
 
@@ -64,7 +66,7 @@ class TestNetwork:
 
 			logger.debug("Creating network order with the following parameters:\nCidr: %s\n\Gateway: %s\nAllocation: %s" % (cidr, gateway, allocation))
 
-			requirements =  "\"Glue2CloudComputeManagerID==\'%s\'\"" % (self.managerLocation)
+			requirements =  'Glue2CloudComputeManagerID==\"%s\"' % (self.managerLocation)
 			extraParams = ["--requirements", requirements, "--cidr", cidr, "--allocation", allocation, "--gateway", gateway]
 			ordersID = self.fogbowApi.createNetworkOrder(extraParams)
 
@@ -86,24 +88,25 @@ class TestNetwork:
 		triesCount = 0
 
 		#Waiting for order to get fulfilled
-		while(triesCount <= 10): 
+		while(triesCount <= 10):
+			++triesCount
 			orderDetails = self.fogbowApi.getOrder(orderId)
 			orderStatus = self.fogbowApi.getOrderStatus(orderDetails)
 			orderStatus = orderStatus.strip()
 			
-			if orderStatus != "fulfilled" 
+			if str(orderStatus) == "fulfilled":
 				break
 			else:
 				time.sleep(30)
 
 
-		if orderStatus != "fulfilled":
+		if str(orderStatus) != "fulfilled":
 			raise Exception('Timeout waiting for Order to get fulfilled') 
 		
 		#Waiting for order to have a networkID
 		triesCount = 0
 		while (triesCount <= 10):
-				
+			++triesCount
 			orderDetails = self.fogbowApi.getOrder(orderId)
 			networkId = self.fogbowApi.getReourcesId(orderDetails)
 			
@@ -150,7 +153,7 @@ class TestNetwork:
 
 			logger.debug("Creating %s orders with the following parameters: \nImage: %s\Cpu Size: %s\nMemory: %s" % (orderNumber, image, cpuSize, memorySize))
 
-			requirements =  "\"Glue2vCPU >= %s && Glue2RAM >= %s Glue2CloudComputeManagerID==\'%s\'\"" % (self.managerLocation, cpuSize, memorySize)
+			requirements =  "Glue2vCPU >= %s && Glue2RAM >= %s Glue2CloudComputeManagerID==\'%s\'" % (self.managerLocation, cpuSize, memorySize)
 
 			extraParams = ["--n", orderNumber, "--requirements", requirements, "--image", image, "--public-key", self.publicKey, "--network", networkId]
 			ordersID = self.fogbowApi.createIntanceOrder(extraParams)
@@ -228,7 +231,7 @@ class TestNetwork:
 		
 	def getLocalNetworkIp(self, instanceId):
 		resourceDetails = self.fogbowApi.getComputer(instanceId)
-		return =  self.fogbowApi.getLocalNetworkIp(resourceDetails)
+		self.fogbowApi.getLocalNetworkIp(resourceDetails)
 
 	def testeConnectionBetweenMVS(self, sshInfoVM1, ipVM2):
 
@@ -304,7 +307,7 @@ class TestNetwork:
 			if sshComputeA is not None and sshComputeB is not None:
 				#Get computer b Local IP
 				computeBLocalIP = self.getLocalNetworkIp(computeB)
-				self.testeConnectionBetweenMVS(sshComputeA, computeBLocalIP):
+				self.testeConnectionBetweenMVS(sshComputeA, computeBLocalIP)
 
 		else:
 			print('Was not possible to test.')
